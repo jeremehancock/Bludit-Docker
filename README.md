@@ -84,7 +84,7 @@ To force a fresh Bludit download (overwriting your site):
    docker compose restart
    ```
 
-> A forced re-install will overwrite custom modifications to Bludit. It will not overwrite the content or settings that you have applied in the Bludit admin panel (those live under `bl-content/` which `rsync -a` preserves), but you should still back up first.
+> A forced re-install will overwrite custom modifications to Bludit. It will not overwrite the content or settings that you have applied in the Bludit admin panel (those live under `bl-content/` and are preserved), but you should still back up first.
 
 ## File Ownership on the Host
 
