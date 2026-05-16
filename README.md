@@ -2,7 +2,7 @@
 
 Docker setup for [Bludit Flat File CMS](https://www.bludit.com/).
 
-The goal of this project is to create a quick containerized environment with a Bludit installation for testing and development purposes. This is the Docker counterpart of [Bludit-Vagrant](https://github.com/jeremehancock/Bludit-Vagrant) and behaves as closely to it as possible — you can stop and start the container without overwriting your Bludit install.
+The goal of this project is to create a quick containerized environment with a Bludit installation for testing and development purposes. You can stop and start the container without overwriting your Bludit install.
 
 The following technologies are automatically installed for you:
 
@@ -42,7 +42,7 @@ On the first start the container will:
    ```
    docker compose logs -f
    ```
-2. Point your web browser to [http://localhost:8080](http://localhost:8080) to view your Bludit site
+2. Point your web browser to [http://localhost:9090](http://localhost:9090) to view your Bludit site
 3. Follow the steps to complete the Bludit installation
 4. If you'd like a shell inside the running container:
    ```
@@ -142,21 +142,9 @@ Bludit-Docker/
             └── bludit/      # Bludit lives here after first start (gitignored)
 ```
 
-## How It Differs From the Vagrant Setup
-
-The behavior is intentionally as close to Bludit-Vagrant as possible:
-
-* Same host port: [http://localhost:8080](http://localhost:8080)
-* Same on-disk location for your Bludit files: `localhost/www/html/bludit`
-* Same "latest release via GitHub API" download method
-* Same `.bludit-installed` marker file to prevent re-downloading
-* Same Apache vhost configuration with `mod_rewrite` enabled
-
-The main differences are operational: you use `docker compose up/stop/start/down` instead of `vagrant up/halt/up/destroy`, and the underlying OS is the slim Debian base from the official `php:8.2-apache` image rather than a full Ubuntu Jammy VM.
-
 ## AI Disclaimer
 
-This Docker port of the Bludit-Vagrant project was created with the help of AI.
+This project was created with the help of AI.
 
 ## Disclaimer
 
