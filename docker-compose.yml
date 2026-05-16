@@ -4,7 +4,7 @@ services:
     image: bludit-docker:latest
     container_name: bludit
     ports:
-      - "8080:80"
+      - "9090:80"
     volumes:
       - ./localhost/www/html:/var/www/html
     environment:
