@@ -4,6 +4,23 @@ set -e
 WEB_ROOT=/var/www/html/bludit
 MARKER="$WEB_ROOT/.bludit-installed"
 
+# Align the in-container www-data user with the host user's UID/GID so files
+# created via the bind mount end up owned by the host user, not root.
+PUID="${PUID:-33}"
+PGID="${PGID:-33}"
+
+CURRENT_UID=$(id -u www-data)
+CURRENT_GID=$(getent group www-data | cut -d: -f3)
+
+if [ "$PGID" != "$CURRENT_GID" ]; then
+    echo "Setting www-data GID to $PGID"
+    groupmod -o -g "$PGID" www-data
+fi
+if [ "$PUID" != "$CURRENT_UID" ]; then
+    echo "Setting www-data UID to $PUID"
+    usermod -o -u "$PUID" www-data
+fi
+
 echo -e "\e[96m******************************* Install Latest Bludit *******************************\e[0m"
 
 if [ -f "$MARKER" ]; then
@@ -40,7 +57,7 @@ else
     touch "$MARKER"
 fi
 
-chown -R www-data:www-data "$WEB_ROOT"
+chown -R www-data:www-data /var/www/html
 
 echo -e "\e[96m******************************* Starting Apache *******************************\e[0m"
 exec "$@"

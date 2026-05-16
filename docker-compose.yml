@@ -7,4 +7,9 @@ services:
       - "8080:80"
     volumes:
       - ./localhost/www/html:/var/www/html
+    environment:
+      # File ownership on the host. Defaults to your host user via the .env file
+      # generated below; override by exporting PUID / PGID before `docker compose up`.
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
     restart: unless-stopped
