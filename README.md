@@ -21,11 +21,7 @@ The following technologies are automatically installed for you:
 1. Find a directory on your computer where you'd like to install this repo
 2. Run `git clone https://github.com/jeremehancock/Bludit-Docker.git`
 3. Run `cd Bludit-Docker`
-4. (Linux/macOS, recommended) Create a `.env` file so Bludit files on the host are owned by your user instead of `root`:
-   ```
-   printf "PUID=%s\nPGID=%s\n" "$(id -u)" "$(id -g)" > .env
-   ```
-   On Docker Desktop (macOS/Windows) this step is optional — the bind mount is already remapped to your user.
+4. (Linux, recommended) Set up `.env` so Bludit files on the host are owned by your user instead of `root` — see [File Ownership on the Host](#file-ownership-on-the-host) below. On Docker Desktop (macOS/Windows) this step is optional.
 5. Run `docker compose up -d --build`
 
 On the first start the container will:
@@ -91,21 +87,38 @@ To force a fresh Bludit download (overwriting your site):
 On Linux, files created by a root-running container end up owned by `root` on
 the host, which makes the bind-mounted `localhost/www/html/bludit` directory
 awkward to edit or delete. To fix this, the entrypoint re-aligns the
-in-container `www-data` user to match the UID/GID you pass in via the `PUID`
-and `PGID` environment variables (set in `.env`, see step 4 above), then
-chowns `/var/www/html` recursively. If you already have a `bludit` directory
-owned by `root`, create the `.env` file and run:
+in-container `www-data` user to match the `PUID` and `PGID` you set in a
+`.env` file, then chowns `/var/www/html` recursively.
+
+The repo ships with an `.env.example` file you can copy as a starting point:
+
+```
+cp .env.example .env
+```
+
+The defaults (`PUID=1000`, `PGID=1000`) match the first user on most Linux
+systems. If your user's IDs differ, populate `.env` with them directly:
+
+```
+printf "PUID=%s\nPGID=%s\n" "$(id -u)" "$(id -g)" > .env
+```
+
+Then start (or restart) the container:
 
 ```
 docker compose up -d
 ```
 
-The entrypoint will chown the existing files to your user on the next start.
-If anything is still owned by `root` after that, run a one-off fix:
+If you already had a `bludit` directory owned by `root`, the entrypoint will
+chown the existing files to your user on the next start. If anything is still
+owned by `root` after that, run a one-off fix:
 
 ```
 sudo chown -R "$(id -u):$(id -g)" localhost/www/html
 ```
+
+On Docker Desktop (macOS/Windows) the bind mount is already remapped to your
+user, so `.env` is optional.
 
 ## Rebuilding the Image
 
