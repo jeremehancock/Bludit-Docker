@@ -134,7 +134,3 @@ Bludit-Docker/
 ## AI Disclaimer
 
 This project was created with the help of AI.
-
-## Disclaimer
-
-All code is provided as-is without any warranty. Use at your own risk.
